@@ -27,6 +27,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using Apollo.Models;
 
 namespace Apollo
 {
@@ -546,32 +547,31 @@ namespace Apollo
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
 
-                    JObject json = JObject.Parse(responseBody);
-                    JArray sections = (JArray)json["shopData"]["sections"];
+                    MPItemShopModel MPItemShop = JsonConvert.DeserializeObject<MPItemShopModel>(responseBody);
 
                     List<string> sectionList = new List<string>();
 
-                    foreach (var section in sections)
+                    foreach (var section in MPItemShop.shopData.sections)
                     {
-                        string sectionId = section["sectionID"].ToString();
-                        string sectionName = section["displayName"].ToString();
+                        string sectionId = section.sectionID;
+                        string sectionName = section.displayName;
 
                         if (sectionId.IndexOf("Test", StringComparison.OrdinalIgnoreCase) == -1 &&
                             sectionName.IndexOf("Test", StringComparison.OrdinalIgnoreCase) == -1 &&
                             sectionId.IndexOf("JamTracks", StringComparison.OrdinalIgnoreCase) == -1 &&
                             sectionName.IndexOf("JamTracks", StringComparison.OrdinalIgnoreCase) == -1)
                         {
-                            List<string> dates = new List<string>();  
+                            List<string> dates = new List<string>();
 
-                            JObject metadata = (JObject)section["metadata"];
+                            ShopMetadataModel metadata = section.metadata;
                             if (metadata != null)
                             {
-                                JArray metaStackRanks = (JArray)metadata["stackRanks"];
+                                List<StackRankModel> metaStackRanks = metadata.stackRanks;
                                 if (metaStackRanks != null && metaStackRanks.Count > 0)
                                 {
-                                    foreach (JObject stackRank in metaStackRanks)
+                                    foreach (StackRankModel stackRank in metaStackRanks)
                                     {
-                                        string startDate = stackRank["startDate"]?.ToString();
+                                        string startDate = stackRank.startDate;
                                         if (!string.IsNullOrEmpty(startDate))
                                         {
                                             dates.Add(startDate);
@@ -579,17 +579,17 @@ namespace Apollo
                                     }
                                 }
 
-                                JArray offerGroups = (JArray)metadata["offerGroups"];
+                                List<OfferGroupModel> offerGroups = metadata.offerGroups;
                                 if (offerGroups != null)
                                 {
-                                    foreach (JObject offerGroup in offerGroups)
+                                    foreach (OfferGroupModel offerGroup in offerGroups)
                                     {
-                                        JArray offerStackRanks = (JArray)offerGroup["stackRanks"];
+                                        List<StackRankModel> offerStackRanks = offerGroup.stackRanks;
                                         if (offerStackRanks != null && offerStackRanks.Count > 0)
                                         {
-                                            foreach (JObject offerStackRank in offerStackRanks)
+                                            foreach (StackRankModel offerStackRank in offerStackRanks)
                                             {
-                                                string startDate = offerStackRank["startDate"]?.ToString();
+                                                string startDate = offerStackRank.startDate;
                                                 if (!string.IsNullOrEmpty(startDate))
                                                 {
                                                     dates.Add(startDate);

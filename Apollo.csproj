@@ -267,6 +267,7 @@
     <Compile Include="MnemonicSearchWindow.xaml.cs">
       <DependentUpon>MnemonicSearchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\MPItemShop.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
