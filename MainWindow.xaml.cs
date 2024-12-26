@@ -356,14 +356,14 @@ namespace Apollo
                                 string itemName = (string)item["name"];
                                 string itemId = (string)item["id"];
 
-                                string iconUrl = (string)item["images"]["icon"];
+                                string iconUrl = item["images"]?["icon"]?.ToString();
                                 if (string.IsNullOrEmpty(iconUrl) || !Uri.IsWellFormedUriString(iconUrl, UriKind.Absolute))
                                 {
-                                    iconUrl = (string)item["images"]["smallIcon"];
+                                    iconUrl = item["images"]?["smallIcon"]?.ToString();
                                 }
                                 if (string.IsNullOrEmpty(iconUrl) || !Uri.IsWellFormedUriString(iconUrl, UriKind.Absolute))
                                 {
-                                    iconUrl = (string)item["images"]["small"];
+                                    iconUrl = item["images"]?["small"]?.ToString();
                                 }
 
                                 if (string.IsNullOrEmpty(iconUrl) || !Uri.IsWellFormedUriString(iconUrl, UriKind.Absolute))
