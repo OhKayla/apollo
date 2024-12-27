@@ -232,6 +232,8 @@ namespace Apollo
                     await DownloadMappingAsync(mapping);
                     DisplayInConsole($"Downloaded: {mapping.fileName}");
                 }
+
+                Process.Start(System.IO.Path.Combine(Environment.CurrentDirectory, "mappings"));
             }
             catch (Exception ex)
             {
@@ -394,6 +396,8 @@ namespace Apollo
                     }
 
                     DisplayInConsole("All cosmetic icons downloaded successfully.");
+
+                    Process.Start(baseFolder);
                 }
             }
             catch (Exception ex)
@@ -625,6 +629,8 @@ namespace Apollo
                             await writer.WriteLineAsync(line);
                         }
                     }
+
+                    Process.Start(filePath);
 
                     DisplayInConsole($"Shop section saved to {fileName}");
                 }
